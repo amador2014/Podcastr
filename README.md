@@ -9,7 +9,6 @@
 
 <p align="center" >
   <img align="center" src="https://img.shields.io/github/last-commit/amador2014/Podcastr">
-  <img align="center" src="https://img.shields.io/github/license/amador2014/Podcastr" />
   <img align="center" src="https://img.shields.io/github/languages/count/amador2014/Podcastr" />
   <img align="center" src="https://img.shields.io/github/languages/top/amador2014/Podcastr" />
 </p>
@@ -81,11 +80,11 @@ Antes de começar você vai precisar ter instalado na sua máquina as ferramenta
 Confira o layout da aplicação [aqui](https://www.figma.com/file/BR6eOIPTK749iWi5zQYWjG/Podcastr-(Copy)) através do Figma.
 
 
-<div id="licenca" />
+---
 
-## :memo: Licença
-Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
-
+<p align="center" > 
+  :heart: Projeto desenvolvido com :heart:
+</p>
 
 
 
