@@ -1,20 +1,87 @@
-import { parseISO } from "date-fns";
-import format from "date-fns/format";
-import { ptBR } from "date-fns/locale";
-import { GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { api } from "../../services/api";
-import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
+import format from "date-fns/format"
+import { parseISO } from "date-fns"
+import { ptBR } from "date-fns/locale"
+import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString"
 
-export default function Episode({episode}) {
-  const router = useRouter();
+import Image from 'next/image'
+import Head from 'next/head'
+import { GetStaticProps, GetStaticPaths } from "next"
+import { useRouter } from "next/router"
+import { api } from "../../services/api"
 
-  return <h1>{router.query.slug}</h1>;
+import styles from './episode.module.scss'
+
+
+type Episode = {
+  id: string
+  title: string
+  members: string
+  thumbnail: string
+  duration: number
+  durationAsString: string
+  url: string
+  publishedAt: string
+  description: string
+};
+
+type EpisodeProps = {   
+  episode: Episode
+}
+
+export default function Episode({episode}: EpisodeProps) {
+  const router = useRouter()
+
+  return (
+    <>
+      <Head>
+        <title>{episode.title} | Podcastr</title>
+      </Head>
+
+      <div className={styles.episode}>
+        <div className={styles.thumbnailContainer}>
+          <button type="button" onClick={router.back}>
+            <img src="/arrow-left.svg" alt="Voltar" />
+          </button>
+
+          <Image
+            width={700}
+            height={160}
+            src={episode.thumbnail}
+            alt={episode.title}
+            objectFit="cover"
+          />
+
+          <button type="button" >
+            <img src="/play.svg" alt="Tocar episódio" />
+          </button>
+        </div>
+
+        <header>
+          <h1>{episode.members}</h1>
+          <span>{episode.members}</span>
+          <span>{episode.publishedAt}</span>
+          <span>{episode.durationAsString}</span>
+        </header>
+
+        <div
+          className={styles.description}
+          dangerouslySetInnerHTML={{ __html: episode.description }}
+        />
+      </div>
+    </>
+  )
+}
+
+export const getStaticPaths:GetStaticPaths = async () => {
+  return {  
+    paths: [],
+    fallback: 'blocking'
+  }
 }
 
 export const getStaticProps:GetStaticProps = async ctx => {
   const { slug } = ctx.params;
-  const { data } = await api.get(`/episodes${slug}`);
+  const { data } = await api.get(`/episodes/${slug}`);
 
   const episode = {
     id: data.id,
