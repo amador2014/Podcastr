@@ -1,35 +1,37 @@
-import format from "date-fns/format"
-import { parseISO } from "date-fns"
-import { ptBR } from "date-fns/locale"
-import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString"
+import format from "date-fns/format";
+import { parseISO } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
 
-import Image from 'next/image'
-import Head from 'next/head'
-import { GetStaticProps, GetStaticPaths } from "next"
-import { useRouter } from "next/router"
-import { api } from "../../services/api"
+import Image from "next/image";
+import Head from "next/head";
+import { GetStaticProps, GetStaticPaths } from "next";
+import { useRouter } from "next/router";
+import { api } from "../../services/api";
 
-import styles from './episode.module.scss'
-
+import styles from "./episode.module.scss";
+import { usePlayer } from "../../contexts/PlayerContext";
 
 type Episode = {
-  id: string
-  title: string
-  members: string
-  thumbnail: string
-  duration: number
-  durationAsString: string
-  url: string
-  publishedAt: string
-  description: string
+  id: string;
+  title: string;
+  members: string;
+  thumbnail: string;
+  duration: number;
+  durationAsString: string;
+  url: string;
+  publishedAt: string;
+  description: string;
 };
 
-type EpisodeProps = {   
-  episode: Episode
-}
+type EpisodeProps = {
+  episode: Episode;
+};
 
-export default function Episode({episode}: EpisodeProps) {
-  const router = useRouter()
+export default function Episode({ episode }: EpisodeProps) {
+  const router = useRouter();
+
+  const { play } = usePlayer();
 
   return (
     <>
@@ -51,7 +53,7 @@ export default function Episode({episode}: EpisodeProps) {
             objectFit="cover"
           />
 
-          <button type="button"  >
+          <button type="button" onClick={() => play(episode)}>
             <img src="/play.svg" alt="Tocar episódio" />
           </button>
         </div>
@@ -69,33 +71,33 @@ export default function Episode({episode}: EpisodeProps) {
         />
       </div>
     </>
-  )
+  );
 }
 
-export const getStaticPaths:GetStaticPaths = async () => {
-  const { data } = await api.get('episodes', {
+export const getStaticPaths: GetStaticPaths = async () => {
+  const { data } = await api.get("episodes", {
     params: {
       _limit: 2,
-      _sort: 'published_at',
-      _order: 'desc'
-    }
-  })
+      _sort: "published_at",
+      _order: "desc",
+    },
+  });
 
   const paths = data.map(episode => {
-    return { 
-      params: { 
-        slug: episode.id
-      }
-    }
-  })
+    return {
+      params: {
+        slug: episode.id,
+      },
+    };
+  });
 
-  return {  
+  return {
     paths,
-    fallback: 'blocking'
-  }
-}
+    fallback: "blocking",
+  };
+};
 
-export const getStaticProps:GetStaticProps = async ctx => {
+export const getStaticProps: GetStaticProps = async ctx => {
   const { slug } = ctx.params;
   const { data } = await api.get(`/episodes/${slug}`);
 
