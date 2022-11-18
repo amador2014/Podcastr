@@ -80,10 +80,10 @@ Antes de começar você vai precisar ter instalado na sua máquina as ferramenta
 Confira o layout da aplicação [aqui](https://www.figma.com/file/BR6eOIPTK749iWi5zQYWjG/Podcastr-(Copy)) através do Figma.
 
 
----
+&nbsp;
 
 <p align="center" > 
-  :heart: Projeto desenvolvido com :heart:
+  Projeto desenvolvido com 💜
 </p>
 
 
